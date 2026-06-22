@@ -269,13 +269,32 @@
       var url = candidates[idx++];
       var im = new Image();
       im.onload = function () {
-        lowRes(im, function (before) {
-          S.img = {
-            name: "sample.jpg", w: im.naturalWidth, h: im.naturalHeight,
-            after: url, before: before, original: url, file: null
-          };
-          setPhase("selected");
-        });
+        // Fetch the same asset as a real File so the sample runs through the
+        // real backend — it requires the API key and takes the same time as a
+        // normal upload (no more instant offline shortcut).
+        fetch(url)
+          .then(function (r) { if (!r.ok) throw new Error(); return r.blob(); })
+          .then(function (blob) {
+            var file = new File([blob], "sample.jpg", { type: blob.type || "image/jpeg" });
+            lowRes(im, function (before) {
+              S.img = {
+                name: "sample.jpg", w: im.naturalWidth, h: im.naturalHeight,
+                after: url, before: before, original: url, file: file
+              };
+              setPhase("selected");
+            });
+          })
+          .catch(function () {
+            // Only if the asset can't be fetched (e.g. opened over file://):
+            // fall back to the offline demo so the page still works locally.
+            lowRes(im, function (before) {
+              S.img = {
+                name: "sample.jpg", w: im.naturalWidth, h: im.naturalHeight,
+                after: url, before: before, original: url, file: null
+              };
+              setPhase("selected");
+            });
+          });
       };
       im.onerror = tryNext;   // not at this path — try the next candidate
       im.src = url;
