@@ -1,0 +1,469 @@
+/* ─────────────────────────────────────────────────────────────────
+   Floyo Design System — colors & type
+   Source of truth: Figma "Floyo! [DESIGN SYSTEM]"
+   ───────────────────────────────────────────────────────────────── */
+
+/* Fonts ───────────────────────────────────────────────────────────
+   Brand fonts (self-hosted in /fonts):
+   - Roboto         → primary UI / body / headlines (variable .ttf)
+   - Janeiro        → chunky 70s display + decorative
+   - Arcade Pixel   → 8-bit display / retro flourishes
+   ───────────────────────────────────────────────────────────────── */
+/* Roboto is loaded via Google Fonts in the <head> of index.html.
+   (The original bundle shipped empty 0-byte Roboto .ttf files, so the
+   self-hosted @font-face blocks were removed to avoid failed requests.
+   To self-host instead, drop real Roboto variable .ttf files into /fonts
+   and restore the two @font-face blocks here.) */
+@font-face {
+  font-family: "Janeiro";
+  src: url("fonts/Janeiro.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Arcade Pixel";
+  src: url("fonts/ArcadePixelNeue.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Type families ------------------------------------------------ */
+  --ff-sans: "Roboto", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; /* @kind font */
+  --ff-display: "Janeiro", "Roboto", system-ui, sans-serif; /* @kind font */
+  --ff-pixel: "Arcade Pixel", "Roboto", system-ui, monospace; /* @kind font */
+  --ff-mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, monospace; /* @kind font */
+
+  /* ── Core scale: Ube Violet (PRIMARY) ── */
+  --ube-1: #F7F1FF;
+  --ube-2: #E6D4FF;
+  --ube-3: #D5B8FF;
+  --ube-4: #AF7FF4;
+  --ube-5: #8358D4;   /* primary */
+  --ube-6: #543294;
+  --ube-7: #3B1F52;
+  --ube-8: #2C173D;
+  --ube-9: #21152A;
+  --ube-10: #1A0C34;  /* near-black violet */
+
+  /* ── Grape (purple text-only neutral) ── */
+  --grape-1: #F7F1FF;
+  --grape-2: #E6D4FF;
+  --grape-3: #C4B4E0;
+  --grape-4: #AF7FF4;
+  --grape-5: #8358D4;
+  --grape-6: #715D98;
+  --grape-7: #5B487F;
+  --grape-8: #2C173D;
+  --grape-9: #21152A;
+  --grape-10: #1A0C34;
+
+  /* ── Lemon (warning / accent yellow) ── */
+  --lemon-1: #FFFDE8;
+  --lemon-2: #FFF9BC;
+  --lemon-3: #FFF48B;
+  --lemon-4: #FFEB28;
+  --lemon-5: #F5C813;
+  --lemon-6: #AA7100;
+  --lemon-7: #8F5A00;
+  --lemon-8: #744401;
+  --lemon-9: #653601;
+  --lemon-10: #532700;
+
+  /* ── Mint (success green) ── */
+  --mint-1: #E5FFF3;
+  --mint-2: #A6FFD6;
+  --mint-3: #56FFB1;
+  --mint-4: #3CE195;
+  --mint-5: #069252;
+  --mint-6: #005E33;
+  --mint-7: #014A28;
+  --mint-8: #01341C;
+  --mint-9: #002514;
+  --mint-10: #00190E;
+
+  /* ── Raspberry (danger pink/red) ── */
+  --raspberry-1: #FFECFC;
+  --raspberry-2: #FFCCE7;
+  --raspberry-3: #FF9BC4;
+  --raspberry-4: #FF6D95;
+  --raspberry-5: #EA2B6B;
+  --raspberry-6: #AD0347;
+  --raspberry-7: #8A0241;
+  --raspberry-8: #660130;
+  --raspberry-9: #410123;
+  --raspberry-10: #300019;
+
+  /* ── Blueberry (info blue) ── */
+  --blueberry-1: #EFF7FF;
+  --blueberry-2: #C3E4FF;
+  --blueberry-3: #9BD1FF;
+  --blueberry-4: #7AC0FF;
+  --blueberry-5: #409AEB;
+  --blueberry-6: #0D6BBE;
+  --blueberry-7: #00539E;
+  --blueberry-8: #004585;
+  --blueberry-9: #072846;
+  --blueberry-10: #001A31;
+
+  /* ── Cobalt (deep navy — API / technical inverted surface) ──
+     Added 26-05 from API-endpoint marketing page. Distinct from
+     Blueberry (which is brighter, info-blue). Cobalt is the
+     "technical / dev / engineer" counterpart to Ube (playful / product).
+     Use for: API docs surfaces, code snippets, developer marketing. */
+  --cobalt-1:  #EEF2FF;
+  --cobalt-2:  #D3DCFF;   /* tint — pixel-badge stroke */
+  --cobalt-3:  #A4BEFF;   /* light text on cobalt-9/10 */
+  --cobalt-4:  #7396FF;   /* primary accent / link on dark cobalt */
+  --cobalt-5:  #475DCE;   /* mid */
+  --cobalt-6:  #2E419E;   /* card border on dark */
+  --cobalt-7:  #192765;   /* divider / inner border */
+  --cobalt-8:  #101844;   /* HERO surface (page bg) */
+  --cobalt-9:  #0A102E;   /* card / panel surface on dark */
+  --cobalt-10: #050818;   /* deepest / scrim */
+
+  /* ── Tangerine (warm accent) ── */
+  --tangerine-1: #FFF5EE;
+  --tangerine-2: #FFD7BE;
+  --tangerine-3: #FFBC92;
+  --tangerine-4: #FF934F;
+  --tangerine-5: #DD5C28;
+  --tangerine-6: #AE3700;
+  --tangerine-7: #982B00;
+  --tangerine-8: #781E00;
+  --tangerine-9: #601000;
+  --tangerine-10: #3D0A00;
+
+  /* ── Strawberry (deep red) ── */
+  --strawberry-1: #FFEFF1;
+  --strawberry-2: #FFBDC8;
+  --strawberry-3: #FF7A90;
+  --strawberry-4: #FF5070;
+  --strawberry-5: #C6143B;
+  --strawberry-6: #930020;
+  --strawberry-7: #5E0014;
+  --strawberry-8: #4C0013;
+  --strawberry-9: #360010;
+  --strawberry-10: #29000C;
+
+  /* ── Shades ── */
+  --white: #FFFFFF;
+  --black: #000000;
+  --gray-line: #E2E2E2;
+  --gray-text: #8E8E8E;
+
+  /* Semantic ───────────────────────────────────────────────────── */
+  --bg: var(--white);
+  --bg-elevated: var(--white);
+  --bg-subtle: var(--ube-1);          /* faint violet wash */
+  --bg-inverted: var(--ube-10);       /* near-black violet — playful / product */
+  --bg-cobalt: var(--cobalt-8);       /* deep navy — technical / API / dev */
+  --bg-cobalt-deep: var(--cobalt-9);  /* card on cobalt surface */
+
+  --fg: #1A0C34;                      /* primary text — deep ube */
+  --fg-muted: var(--grape-7);         /* secondary text */
+  --fg-subtle: var(--gray-text);      /* tertiary / metadata */
+  --fg-on-violet: var(--white);
+  --fg-on-mint: var(--mint-10);
+  --fg-on-cobalt: var(--white);              /* primary text on cobalt surface */
+  --fg-on-cobalt-muted: var(--cobalt-3);     /* secondary text on cobalt — #A4BEFF */
+  --fg-on-cobalt-subtle: var(--cobalt-4);    /* tertiary / link on cobalt — #7396FF */
+
+  --border: var(--gray-line);
+  --border-strong: var(--ube-3);
+  --border-violet: var(--ube-4);
+  --border-cobalt: var(--cobalt-6);          /* card border on cobalt surface */
+  --border-cobalt-soft: var(--cobalt-7);     /* divider / inner border on cobalt */
+
+  --accent: var(--ube-5);             /* primary brand */
+  --accent-hover: var(--ube-6);
+  --accent-press: var(--ube-7);
+  --accent-fg: var(--white);
+
+  --success: var(--mint-5);
+  --success-fg: var(--mint-1);
+  --info: var(--blueberry-5);
+  --warning: var(--lemon-5);
+  --danger: var(--raspberry-5);
+
+  /* Spacing / radii / shadows ───────────────────────────────────── */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+  --space-10: 64px;
+  --space-11: 80px;
+  --space-12: 120px;
+
+  --radius-xs: 2px;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 999px;
+
+  /* Floyo doesn't lean on shadows — soft purple-tinted lift only */
+  --shadow-sm: 0 1px 2px rgba(26, 12, 52, 0.06);
+  --shadow-md: 0 4px 14px rgba(26, 12, 52, 0.08);
+  --shadow-lg: 0 18px 40px -12px rgba(26, 12, 52, 0.18);
+  --shadow-violet: 0 8px 24px -8px rgba(131, 88, 212, 0.45);
+  --shadow-cobalt: 0 8px 24px -8px rgba(115, 150, 255, 0.45);
+
+  /* Pixel halo glows — multi-layer ring stacks for pixel badges & chips.
+     Stacking order matches the Figma "NEW!" badge: outer soft halo,
+     inner halos, then a 1–2px crisp inner ring. Use on pixel badges,
+     status chips, the "alpha tester" sticker, etc. */
+  --pixel-halo-cobalt:
+    0 0 0 12px rgba(115,150,255,0.10),
+    0 0 0 6px  rgba(164,190,255,0.15),
+    0 0 0 2px  rgba(211,220,255,0.20),
+    inset 0 0 0 3px rgba(211,220,255,0.15),
+    inset 0 0 0 5px rgba(164,190,255,0.10);
+  --pixel-halo-violet:
+    0 0 0 12px rgba(131,88,212,0.10),
+    0 0 0 6px  rgba(175,127,244,0.15),
+    0 0 0 2px  rgba(213,184,255,0.20),
+    inset 0 0 0 3px rgba(213,184,255,0.15),
+    inset 0 0 0 5px rgba(175,127,244,0.10);
+  --pixel-halo-mint:
+    0 0 0 12px rgba(60,225,149,0.10),
+    0 0 0 6px  rgba(166,255,214,0.18),
+    0 0 0 2px  rgba(229,255,243,0.22),
+    inset 0 0 0 3px rgba(166,255,214,0.18),
+    inset 0 0 0 5px rgba(60,225,149,0.10);
+  --pixel-halo-lemon:
+    0 0 0 12px rgba(255,235,40,0.12),
+    0 0 0 6px  rgba(255,244,139,0.18),
+    0 0 0 2px  rgba(255,253,232,0.22),
+    inset 0 0 0 3px rgba(255,244,139,0.18),
+    inset 0 0 0 5px rgba(255,235,40,0.10);
+
+  /* Motion ──────────────────────────────────────────────────────── */
+  --ease-out: cubic-bezier(.2, .8, .2, 1); /* @kind other */
+  --ease-in-out: cubic-bezier(.6, .04, .3, .96); /* @kind other */
+  --dur-fast: 120ms; /* @kind other */
+  --dur: 200ms; /* @kind other */
+  --dur-slow: 360ms; /* @kind other */
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Base text styles (desktop scale)
+   ───────────────────────────────────────────────────────────────── */
+.h1, .h2, .h3, .h4, .h5, .h6 { font-family: var(--ff-sans); color: var(--fg); margin: 0; }
+.h1 { font-weight: 800; font-size: 80px; line-height: 1.2; letter-spacing: -0.02em; }
+.h2 { font-weight: 600; font-size: 56px; line-height: 1.2; letter-spacing: -0.02em; }
+.h3 { font-weight: 600; font-size: 28px; line-height: 1.2; letter-spacing: -0.01em; }
+.h4 { font-weight: 600; font-size: 17px; line-height: 1.3; }
+.h5 { font-weight: 600; font-size: 14px; line-height: 1.3; }
+.h6 { font-weight: 600; font-size: 12px; line-height: 1.4; letter-spacing: 0.02em; text-transform: uppercase; }
+
+/* Display — Janeiro chunky retro display */
+.display-1, .display-2, .display-3, .display-4, .display-5 {
+  font-family: var(--ff-display); color: var(--fg); margin: 0; line-height: 1.05;
+  font-weight: 400; letter-spacing: 0;
+}
+.display-1 { font-size: 90px; }
+.display-2 { font-size: 64px; }
+.display-3 { font-size: 30px; }
+.display-4 { font-size: 19px; }
+.display-5 { font-size: 14px; letter-spacing: 0.05em; }
+
+/* Title — Arcade Pixel for retro 8-bit headlines */
+.title-1, .title-2, .title-3, .title-4, .title-5 {
+  font-family: var(--ff-pixel); color: var(--fg); margin: 0; line-height: 1.1;
+  font-weight: 400; letter-spacing: 0;
+}
+.title-1 { font-size: 90px; }
+.title-2 { font-size: 64px; }
+.title-3 { font-size: 30px; }
+.title-4 { font-size: 19px; }
+.title-5 { font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* Decorative — small Janeiro labels / kickers */
+.decorative-l { font-family: var(--ff-display); font-size: 30px; line-height: 1; letter-spacing: 0.02em; }
+.decorative-m { font-family: var(--ff-display); font-size: 19px; line-height: 1; letter-spacing: 0.02em; }
+.decorative-s { font-family: var(--ff-display); font-size: 14px; line-height: 1; letter-spacing: 0.02em; }
+
+/* Body */
+.body-l, .body-m, .body-s, .body-xs, .body-xxs { font-family: var(--ff-sans); color: var(--fg); margin: 0; }
+.body-l   { font-size: 17px; line-height: 1.5; letter-spacing: 0.01em; }
+.body-l-semi { font-size: 17px; line-height: 1.5; font-weight: 600; }
+.body-m   { font-size: 17px; line-height: 1.5; }
+.body-m-semi { font-size: 17px; line-height: 1.5; font-weight: 600; }
+.body-s   { font-size: 14px; line-height: 1.45; }
+.body-s-semi { font-size: 14px; line-height: 1.45; font-weight: 600; }
+.body-xs  { font-size: 12px; line-height: 1.4; }
+.body-xs-semi { font-size: 12px; line-height: 1.4; font-weight: 600; }
+.body-xxs { font-size: 10px; line-height: 1.4; }
+
+/* Accent / Buttons (uppercase tracked Roboto Semibold) */
+.accent-l { font-family: var(--ff-sans); font-weight: 600; font-size: 19px; line-height: 1.2; }
+.accent-m { font-family: var(--ff-sans); font-weight: 600; font-size: 19px; line-height: 1.2; }
+.accent-s { font-family: var(--ff-sans); font-weight: 600; font-size: 14px; line-height: 1.2; letter-spacing: 0.10em; text-transform: uppercase; }
+.button-l { font-family: var(--ff-sans); font-weight: 600; font-size: 19px; line-height: 1.2; letter-spacing: 0.10em; text-transform: uppercase; }
+.button-s { font-family: var(--ff-sans); font-weight: 600; font-size: 12px; line-height: 14px; letter-spacing: 0.03em; text-transform: uppercase; }
+
+/* Mono / code */
+.code, code, kbd, samp, pre { font-family: var(--ff-mono); font-size: 13px; }
+
+/* Default base (when applied to <body>) */
+.floyo-base {
+  font-family: var(--ff-sans);
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Pixel-perfect rendering for pixel-icon SVGs and pixel type */
+.pixelated, .pixel-icon img, .pixel-icon svg {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  shape-rendering: crispEdges;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Surface modifiers — apply to a section/page wrapper to flip the
+   semantic fg/border tokens to their on-dark counterparts. Children
+   that use --fg / --border / --fg-muted automatically follow.
+   ───────────────────────────────────────────────────────────────── */
+.surface-violet {
+  background: var(--bg-inverted);
+  color: var(--fg-on-violet);
+  --fg: #FFFFFF;
+  --fg-muted: var(--ube-3);          /* #D5B8FF */
+  --fg-subtle: var(--ube-4);         /* #AF7FF4 */
+  --border: rgba(213, 184, 255, 0.18);
+  --border-strong: var(--ube-4);
+  --bg: var(--ube-10);
+  --bg-elevated: var(--ube-9);
+  --bg-subtle: var(--ube-8);
+}
+.surface-cobalt {
+  background: var(--bg-cobalt);
+  color: var(--fg-on-cobalt);
+  --fg: #FFFFFF;
+  --fg-muted: var(--cobalt-3);       /* #A4BEFF */
+  --fg-subtle: var(--cobalt-4);      /* #7396FF */
+  --border: var(--cobalt-7);
+  --border-strong: var(--cobalt-6);
+  --bg: var(--cobalt-8);
+  --bg-elevated: var(--cobalt-9);
+  --bg-subtle: var(--cobalt-9);
+  --accent: var(--cobalt-4);         /* links / accents flip to cobalt-4 */
+  --accent-hover: var(--cobalt-3);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Pixel halo badge — small chip with multi-layer pixel glow.
+   Usage:
+     <span class="pixel-badge pixel-badge-cobalt">NEW!</span>
+     <span class="pixel-badge pixel-badge-mint">LIVE</span>
+   Use ON dark surfaces (cobalt or violet); the halo bleeds outward.
+   Always pair with .title-5 typography (Arcade Pixel, uppercase).
+   ───────────────────────────────────────────────────────────────── */
+.pixel-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: var(--ff-pixel);
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.pixel-badge-cobalt {
+  background: var(--cobalt-9);
+  border: 1px solid var(--cobalt-2);
+  color: var(--cobalt-2);
+  box-shadow: var(--pixel-halo-cobalt);
+}
+.pixel-badge-violet {
+  background: var(--ube-10);
+  border: 1px solid var(--ube-3);
+  color: var(--ube-3);
+  box-shadow: var(--pixel-halo-violet);
+}
+.pixel-badge-mint {
+  background: var(--mint-10);
+  border: 1px solid var(--mint-2);
+  color: var(--mint-2);
+  box-shadow: var(--pixel-halo-mint);
+}
+.pixel-badge-lemon {
+  background: var(--lemon-10);
+  border: 1px solid var(--lemon-3);
+  color: var(--lemon-3);
+  box-shadow: var(--pixel-halo-lemon);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Section kicker — short uppercase tracked label that opens a
+   section. Reuses .title-5 type; adds tinted color variants matching
+   the section's accent. Use one accent per section, not all six.
+   ───────────────────────────────────────────────────────────────── */
+.kicker { font-family: var(--ff-pixel); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.1; }
+.kicker-mint      { color: var(--mint-4);      }   /* #3CE195 — success / live */
+.kicker-cobalt    { color: var(--cobalt-3);    }   /* #A4BEFF — technical / API */
+.kicker-cobalt-bright { color: var(--cobalt-4); }  /* #7396FF — active / "new" */
+.kicker-lemon     { color: var(--lemon-4);     }   /* #FFEB28 — pricing / attention */
+.kicker-raspberry { color: var(--raspberry-4); }   /* #FF6D95 — danger / contrast */
+.kicker-violet    { color: var(--ube-3);       }   /* #D5B8FF — default on dark */
+
+/* ─────────────────────────────────────────────────────────────────
+   Comparison card pair — Without / With Floyo pattern.
+   Pair two .compare-card siblings inside a flex row.
+   ───────────────────────────────────────────────────────────────── */
+.compare-card {
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+.compare-card-loss {
+  background: var(--strawberry-9);
+  border-color: var(--strawberry-5);
+  color: var(--white);
+}
+.compare-card-win {
+  background: var(--mint-8);
+  border: 1px dashed var(--mint-4);
+  color: var(--white);
+  box-shadow: 0 0 0 4px rgba(60, 225, 149, 0.08);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Pixel-step CTA — "+ Make a workflow." multi-color flourish.
+   Usage:
+     <p class="pixel-step-cta">
+       <span class="step-plus">+</span> Make
+       <span class="step-glow"></span>
+       a workflow. Hit the endpoint.
+     </p>
+   ───────────────────────────────────────────────────────────────── */
+.pixel-step-cta {
+  font-family: var(--ff-display);
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+.pixel-step-cta .step-plus { color: var(--cobalt-4); margin-right: 0.2em; }
+.pixel-step-cta .step-glow {
+  display: inline-block; width: 0.6em; height: 0.6em; vertical-align: middle;
+  background: var(--cobalt-4);
+  box-shadow: 0 0 24px 4px rgba(115, 150, 255, 0.6);
+  margin: 0 0.3em; border-radius: 2px;
+}

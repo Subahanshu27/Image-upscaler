@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Image Upscaler | Upscale to 8K Online - Floyo</title>
+<meta name="description" content="Upscale any image to 8K resolution. Powered by Seed VR 2. Sharper details, recovered textures, real detail recovery. Upload and enhance in seconds.">
+<link rel="canonical" href="https://floyo.ai/tools/ai-image-upscaler">
+<meta property="og:title" content="AI Image Upscaler | Upscale to 8K Online - Floyo">
+<meta property="og:description" content="Upscale any image to 8K resolution. Powered by Seed VR 2. Real detail recovery, not just pixel stretching. Upload and enhance in seconds.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://floyo.ai/tools/ai-image-upscaler">
+<meta property="og:image" content="https://floyo.ai/og/ai-image-upscaler.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Image Upscaler | Upscale to 8K Online - Floyo">
+<meta name="twitter:description" content="Upscale any image to 8K resolution. Powered by Seed VR 2. Real detail recovery, not just pixel stretching.">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Floyo AI Image Upscaler","url":"https://floyo.ai/tools/ai-image-upscaler","applicationCategory":"MultimediaApplication","operatingSystem":"Web browser","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"AI image upscaler powered by Seed VR 2. Enhance any image up to 8K resolution with real detail recovery.","creator":{"@type":"Organization","name":"Floyo","url":"https://floyo.ai"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"How to Upscale an Image with AI","description":"Upscale any image to 8K resolution using the Floyo AI Image Upscaler powered by Seed VR 2.","step":[{"@type":"HowToStep","name":"Upload your image","text":"Drag and drop any JPG, PNG, or WebP file. Or paste from your clipboard."},{"@type":"HowToStep","name":"Upscale with AI","text":"Seed VR 2 analyzes your image and reconstructs detail at higher resolution. Choose 2x, 4x, or 8x."},{"@type":"HowToStep","name":"Download","text":"Get your upscaled image in PNG, JPG, or WebP. Full resolution, ready for print, web, or your product pipeline."}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I get started?","acceptedAnswer":{"@type":"Answer","text":"Create a Floyo account and get an API key. Then upload your image and choose your upscale factor. The tool runs on the same Floyo API that powers batch processing and custom workflows."}},{"@type":"Question","name":"How much can I upscale an image?","acceptedAnswer":{"@type":"Answer","text":"Up to 8x the original resolution. A 1000x1000 image becomes 8000x8000. Choose 2x, 4x, or 8x."}},{"@type":"Question","name":"What AI model powers this tool?","acceptedAnswer":{"@type":"Answer","text":"Seed VR 2 by ByteDance. A diffusion-based super-resolution model that generates realistic detail rather than just sharpening pixels."}},{"@type":"Question","name":"Will upscaling make a blurry photo sharp?","acceptedAnswer":{"@type":"Answer","text":"The AI can recover significant detail from blurry or low-resolution images, but results depend on the source quality. It works best on images that are low-resolution but otherwise clean."}},{"@type":"Question","name":"Can I upscale images for print?","acceptedAnswer":{"@type":"Answer","text":"Yes. Upscaling to 4x or 8x typically gives you enough resolution for high-quality printing at 300 DPI. A 1000px image at 4x becomes 4000px, which prints at about 13 inches at 300 DPI."}},{"@type":"Question","name":"What is Floyo?","acceptedAnswer":{"@type":"Answer","text":"Floyo is a platform for running AI workflows, originally ComfyUI Flow. This upscaler runs on a Floyo-hosted ComfyUI workflow. Developers can use the Floyo API to build image processing into their own products."}},{"@type":"Question","name":"What is ComfyUI?","acceptedAnswer":{"@type":"Answer","text":"ComfyUI is an open-source visual workflow builder for AI image and video generation. Floyo hosts ComfyUI workflows in the cloud so you can run them without local hardware."}},{"@type":"Question","name":"What is the Floyo API?","acceptedAnswer":{"@type":"Answer","text":"The Floyo API lets developers run any ComfyUI workflow programmatically. Send an API call with your image, specify the workflow, and get the result back. It handles GPU infrastructure, model loading, and scaling."}}]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="colors_and_type.css">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;min-height:100%}
+  body{background:var(--bg-inverted);font-family:var(--ff-sans);-webkit-font-smoothing:antialiased}
+  h1,h2,h3,h4,h5,h6{font-family:"Plus Jakarta Sans",var(--ff-sans)}
+  a{color:inherit}
+  button{font-family:inherit}
+
+  /* mask icon */
+  .i{display:inline-block;width:20px;height:20px;background:currentColor;
+     -webkit-mask:var(--u) center/contain no-repeat;mask:var(--u) center/contain no-repeat;flex:none}
+
+  /* ── chrome ─────────────────────────────────────────────── */
+  .wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;height:64px;border-bottom:1px solid var(--border);padding:0 32px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer}
+  .brand .logo{height:34px;width:auto;color:#fff;display:block}
+  .brand .logo .dot{fill:var(--mint-3)}
+  .topnav{display:flex;align-items:center;gap:20px}
+  .topnav a{font-size:13px;color:var(--ube-3);text-decoration:none}
+  .topnav a:hover{color:#fff}
+  .topnav .apidocs-btn{background:var(--ube-5);color:#fff;padding:8px 15px;border-radius:8px;font-weight:600}
+  .topnav .apidocs-btn:hover{background:var(--ube-4);color:#fff}
+  .powered-by{display:inline-flex;align-items:center;gap:6px;margin-top:18px;font-size:12px;
+     color:var(--ube-3);text-decoration:none}
+  .powered-by:hover{color:#fff}
+  .powered-by b{color:#fff;font-weight:700}
+  .powered-by .i{width:13px;height:13px}
+  .topbar .pixel-badge{transform:scale(.92)}
+
+  /* variant switcher */
+  #switcher{display:flex;align-items:center;justify-content:center;gap:14px;padding:22px 0 4px}
+  #switcher .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ube-4);font-weight:600}
+  .seg{display:inline-flex;background:var(--ube-9);border:1px solid var(--border);border-radius:999px;padding:4px;gap:2px}
+  .seg button{border:none;background:transparent;color:var(--ube-3);cursor:pointer;border-radius:999px;
+     padding:8px 16px;font-size:12px;font-weight:600;letter-spacing:.02em;transition:all var(--dur) var(--ease-out);white-space:nowrap}
+  .seg button .vk{font-family:var(--ff-mono);opacity:.6;margin-right:6px}
+  .seg button:hover{color:#fff}
+  .seg button.on{background:var(--ube-5);color:#fff}
+  .seg button.on .vk{opacity:.8}
+
+  /* buttons */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:none;cursor:pointer;border-radius:999px;
+     font-family:var(--ff-sans);font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+     padding:13px 22px;transition:background var(--dur) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+  .btn .i{width:16px;height:16px}
+  .btn-primary{background:var(--ube-5);color:#fff}
+  .btn-primary:hover{background:var(--ube-6)}
+  .btn-primary:active{background:var(--ube-7);transform:translateY(1px)}
+  .btn-ghost{background:transparent;color:#fff;border:1px solid var(--border-strong)}
+  .btn-ghost:hover{background:rgba(213,184,255,.08)}
+  .btn-block{width:100%;padding:17px 22px;font-size:14px}
+  .btn-lg{padding:16px 26px;font-size:13px}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  :focus-visible{outline:2px solid var(--ube-4);outline-offset:2px}
+
+  /* ── upload card ────────────────────────────────────────── */
+  .ucard{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-2xl);
+     padding:24px;box-shadow:var(--shadow-lg)}
+  .ucard-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .ucard-head .t{display:flex;align-items:center;gap:10px}
+  .ucard-head .t .ai{font-size:17px;font-weight:600;color:#fff}
+  .ucard-head .t .px{width:18px;height:18px;background:var(--lemon-4);border-radius:3px;box-shadow:0 0 0 3px rgba(255,235,40,.18)}
+  .ba-chip{display:flex;align-items:center;gap:7px;background:var(--ube-8);border:1px solid var(--border);
+     border-radius:999px;padding:4px 4px 4px 11px}
+  .ba-chip .lab{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ube-3);font-weight:600}
+  .ba-thumb{width:30px;height:24px;border-radius:5px;overflow:hidden;display:flex}
+  .ba-thumb .b{flex:1;background:linear-gradient(135deg,#7AC0FF,#AF7FF4);filter:blur(1.5px) saturate(.7);opacity:.85}
+  .ba-thumb .a{flex:1;background:linear-gradient(135deg,#3CE195,#8358D4)}
+
+  .dz{border:1.5px dashed var(--ube-4);border-radius:var(--radius-lg);background:rgba(131,88,212,.06);
+     padding:34px 24px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;
+     transition:border-color var(--dur) var(--ease-out),background var(--dur) var(--ease-out)}
+  .dz:hover{background:rgba(131,88,212,.12);border-color:var(--ube-3)}
+  .dz.drag{background:rgba(131,88,212,.2);border-color:var(--mint-4);border-style:solid}
+  .dz.error{border-color:var(--raspberry-5);background:rgba(234,43,107,.1);border-style:solid}
+  .dz .dz-cloud{width:40px;height:40px;color:var(--ube-3)}
+  .dz.error .dz-cloud{color:var(--raspberry-4)}
+  .dz-help{font-size:13px;color:var(--ube-3);margin:0}
+  .dz-help a{color:#fff;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+  .dz-or{font-size:11px;color:var(--ube-4);letter-spacing:.06em}
+  .dz-or a{color:var(--mint-4);cursor:pointer;text-decoration:none;font-weight:600}
+  .dz-or a:hover{text-decoration:underline}
+  .dz-err{font-size:12px;color:var(--raspberry-4);font-weight:600;margin:0;display:none;align-items:center;gap:6px}
+  .dz-err:not([hidden]){display:flex}
+  .fineprint{font-size:11px;color:var(--ube-4);line-height:1.5;margin:14px 2px 0;text-align:center}
+  .fineprint a{color:var(--ube-3);text-decoration:underline;text-underline-offset:2px}
+
+  /* social proof */
+  .proof{display:flex;align-items:center;gap:14px;justify-content:center;flex-wrap:wrap}
+  .stars{display:flex;gap:3px;color:var(--lemon-4)}
+  .stars .i{width:18px;height:18px}
+  .proof .score{font-weight:700;color:#fff;font-size:14px}
+  .proof .rc{font-size:13px;color:var(--ube-3)}
+  .proof .avatars{display:flex}
+  .proof .avatars span{width:24px;height:24px;border-radius:50%;border:2px solid var(--bg-inverted);margin-left:-8px;
+     background:var(--mint-3)}
+
+  /* hero type */
+  .kick{font-family:var(--ff-pixel);font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--mint-4)}
+  h1.hero-h{font-weight:800;letter-spacing:-.02em;line-height:1.05;color:#fff;margin:0}
+  .hero-sub{color:var(--ube-3);line-height:1.55;margin:0}
+
+  .bullets{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:11px}
+  .bullets li{display:flex;align-items:center;gap:10px;font-size:14px;color:#fff}
+  .bullets .i{width:18px;height:18px;color:var(--mint-4)}
+
+  /* ── variants layout ────────────────────────────────────── */
+  .variant{padding:46px 0 70px}
+  /* A centered */
+  .vA{display:flex;flex-direction:column;align-items:center;gap:34px;text-align:center}
+  .vA .head{display:flex;flex-direction:column;align-items:center;gap:16px;max-width:680px}
+  .vA h1.hero-h{font-size:64px}
+  .vA .hero-sub{font-size:18px;max-width:560px}
+  .vA .ucard{width:100%;max-width:540px;text-align:left}
+  /* two-column hero row (Picsart-style: demo left, upload right) */
+  .vA-row{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;
+     width:100%;max-width:1040px;text-align:left}
+  .vA-right{display:flex;flex-direction:column;align-items:center;gap:8px;
+     width:100%;max-width:500px;justify-self:start}
+  .vA-row .ucard{max-width:none}
+  .demo-cmp{position:relative;width:100%;max-width:440px;aspect-ratio:2/3;border-radius:16px;
+     overflow:hidden;box-shadow:var(--shadow-lg);background:#0d0a18;justify-self:center}
+  .demo-cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .demo-before{filter:blur(2.4px) saturate(.85) brightness(.97);animation:demoClip 5s ease-in-out infinite}
+  .demo-divider{position:absolute;top:0;bottom:0;left:28%;width:3px;background:rgba(255,255,255,.92);
+     box-shadow:0 0 6px rgba(0,0,0,.5);animation:demoDiv 5s ease-in-out infinite}
+  .demo-handle{position:absolute;top:50%;left:50%;width:34px;height:34px;transform:translate(-50%,-50%);
+     border-radius:50%;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.45)}
+  .demo-handle::before,.demo-handle::after{content:"";position:absolute;top:50%;width:0;height:0;border:5px solid transparent}
+  .demo-handle::before{left:6px;transform:translateY(-50%);border-right-color:#6d4bd1}
+  .demo-handle::after{right:6px;transform:translateY(-50%);border-left-color:#6d4bd1}
+  .demo-tag{position:absolute;top:12px;font-size:10px;font-weight:700;letter-spacing:.06em;
+     padding:5px 9px;border-radius:20px}
+  .demo-tag-b{left:12px;background:rgba(13,10,24,.82);color:#fff}
+  .demo-tag-a{right:12px;background:var(--mint-4);color:#10221d}
+  @keyframes demoClip{0%,100%{clip-path:inset(0 72% 0 0)}50%{clip-path:inset(0 28% 0 0)}}
+  @keyframes demoDiv{0%,100%{left:28%}50%{left:72%}}
+  @media(prefers-reduced-motion:reduce){.demo-before{animation:none;clip-path:inset(0 50% 0 0)}.demo-divider{animation:none;left:50%}}
+
+  /* B split */
+  .vB{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center}
+  .vB .head{display:flex;flex-direction:column;gap:18px}
+  .vB h1.hero-h{font-size:58px}
+  .vB .hero-sub{font-size:18px;max-width:460px}
+  .vB .proof{justify-content:flex-start;margin-top:6px}
+
+  /* C workbench */
+  .vC{display:flex;flex-direction:column;gap:24px}
+  .vC .wb-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .vC .wb-head h1.hero-h{font-size:40px}
+  .vC .wb-head .hero-sub{font-size:15px;margin-top:8px;max-width:520px}
+  .vC .wb-grid{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:stretch}
+  .vC .wb-canvas{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-2xl);
+     padding:26px;display:flex;flex-direction:column}
+  .vC .wb-canvas .ucard-head{margin-bottom:20px}
+  .vC .wb-canvas .dz{flex:1;justify-content:center;min-height:300px}
+  .vC .wb-rail{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-xl);
+     padding:20px;display:flex;flex-direction:column;gap:16px}
+  .wb-rail .rt{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ube-4);font-weight:700}
+  .wb-rail .disabled-stack{display:flex;flex-direction:column;gap:14px;opacity:.5;pointer-events:none}
+  .wb-rail .ph-row{display:flex;flex-direction:column;gap:7px}
+  .wb-rail .ph-row .k{font-size:12px;color:var(--ube-3);font-weight:600}
+  .wb-rail .ph-bar{height:38px;border-radius:8px;background:var(--ube-8);border:1px solid var(--border)}
+  .wb-rail .hint{margin-top:auto;font-size:12px;color:var(--ube-4);line-height:1.5;text-align:center;
+     border-top:1px dashed var(--border);padding-top:14px}
+
+  /* ── workspace ──────────────────────────────────────────── */
+  #workspace{padding:34px 0 80px;display:grid;grid-template-columns:1fr 360px;gap:26px;align-items:start}
+  .stage{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-2xl);
+     overflow:hidden;min-height:520px;position:relative;display:flex;flex-direction:column}
+  .stage-top{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
+  .stage-top .lt{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ube-3)}
+  .stage-top .lt .dot{width:8px;height:8px;border-radius:50%;background:var(--mint-4)}
+  .stage-top .rt{display:flex;align-items:center;gap:8px}
+  .iconbtn{display:inline-flex;align-items:center;gap:7px;background:var(--ube-8);border:1px solid var(--border);
+     color:var(--ube-3);border-radius:8px;padding:8px 12px;font-size:12px;font-weight:600;cursor:pointer}
+  .iconbtn:hover{background:var(--ube-7);color:#fff}
+  .iconbtn .i{width:14px;height:14px}
+  .stage-body{flex:1;position:relative;display:flex;align-items:center;justify-content:center;background:
+     repeating-conic-gradient(var(--ube-9) 0% 25%, var(--ube-10) 0% 50%) 50%/22px 22px}
+  .stage-body img{max-width:100%;max-height:100%;display:block}
+
+  /* phase blocks */
+  .pblock{display:none}
+  #workspace[data-phase="selected"] .stage-selected,
+  #workspace[data-phase="processing"] .stage-processing,
+  #workspace[data-phase="result"] .stage-result,
+  #workspace[data-phase="error"] .stage-error{display:flex}
+  #workspace[data-phase="selected"] #panelMain,
+  #workspace[data-phase="processing"] #panelMain{display:flex}
+  #workspace[data-phase="result"] #panelResult{display:flex}
+  #workspace[data-phase="error"] #panelError{display:flex}
+
+  .stage-selected,.stage-processing,.stage-result,.stage-error{
+     position:absolute;inset:0;flex-direction:column}
+  .preview-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:18px;min-height:0;background:
+     repeating-conic-gradient(var(--ube-9) 0% 25%, var(--ube-10) 0% 50%) 50%/22px 22px}
+  .preview-wrap img{max-width:100%;max-height:440px;border-radius:8px;box-shadow:var(--shadow-lg)}
+
+  /* processing overlay */
+  .proc-over{position:absolute;inset:0;background:rgba(26,12,52,.74);backdrop-filter:blur(3px);
+     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:30px}
+  .proc-spin{width:42px;height:42px;color:var(--mint-4);animation:spin 1s steps(8) infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .proc-over .ps{font-size:15px;color:#fff;font-weight:600;text-align:center}
+  .proc-bar{width:min(380px,80%);height:10px;background:var(--ube-8);border-radius:999px;overflow:hidden;border:1px solid var(--border)}
+  .proc-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--mint-5),var(--mint-4));
+     transition:width .3s linear;position:relative;overflow:hidden}
+  .proc-bar span::after{content:"";position:absolute;inset:0;
+     background:linear-gradient(100deg,transparent 18%,rgba(255,255,255,.5) 50%,transparent 82%);
+     transform:translateX(-100%);animation:procShimmer 1.4s ease-in-out infinite}
+  @keyframes procShimmer{to{transform:translateX(100%)}}
+  @media(prefers-reduced-motion:reduce){.proc-bar span::after{animation:none}}
+  .proc-meta{display:flex;align-items:center;gap:10px;font-family:var(--ff-mono);font-size:12px;color:var(--ube-3)}
+
+  /* result */
+  .stage-result .preview-wrap{flex-direction:column;gap:14px}
+  .cmp{position:relative;width:100%;max-width:560px;aspect-ratio:16/10;border-radius:10px;overflow:hidden;
+     box-shadow:var(--shadow-lg);user-select:none;touch-action:none;cursor:ew-resize}
+  .cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .cmp .clip{position:absolute;inset:0;width:100%;overflow:hidden;clip-path:inset(0 50% 0 0)}
+  .cmp .clip img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;max-width:none}
+  .cmp .tag{position:absolute;top:10px;padding:3px 9px;border-radius:999px;font-size:10px;font-weight:700;
+     letter-spacing:.08em;text-transform:uppercase;color:#fff;transition:opacity .15s ease}
+  .cmp .tag.before{left:10px;background:rgba(26,12,52,.7)}
+  .cmp .tag.after{right:10px;background:var(--mint-5)}
+  .cmp .handle{position:absolute;top:0;bottom:0;left:50%;width:34px;transform:translateX(-50%);cursor:ew-resize;
+     display:flex;align-items:center;justify-content:center}
+  .cmp .handle::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:2px;transform:translateX(-50%);background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.12)}
+  .cmp .handle .grip{width:34px;height:34px;border-radius:50%;background:#fff;display:grid;place-items:center;
+     box-shadow:var(--shadow-md);color:var(--ube-7)}
+  .cmp .handle .grip .i{width:18px;height:18px}
+  .res-trans{font-family:var(--ff-mono);font-size:14px;color:#fff;display:flex;align-items:center;gap:6px}
+  .res-trans .arrow{color:var(--mint-4)}
+
+  /* error */
+  .stage-error{align-items:center;justify-content:center;gap:16px;padding:40px;text-align:center}
+  .stage-error .ic{width:56px;height:56px;color:var(--raspberry-4)}
+  .stage-error .et{font-size:18px;font-weight:700;color:#fff}
+  .stage-error .em{font-size:14px;color:var(--ube-3);max-width:360px;line-height:1.5}
+
+  /* ── panel ──────────────────────────────────────────────── */
+  #panel{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-2xl);
+     padding:22px;display:flex;flex-direction:column;gap:18px;position:sticky;top:18px}
+  .apikey{background:var(--ube-9);border:1px solid var(--border);border-radius:12px;padding:14px 15px;margin-bottom:13px}
+  .apikey .ak-lab{display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.09em;font-weight:700;color:var(--ube-3);text-transform:uppercase;margin-bottom:9px}
+  .apikey .ak-lab svg{width:15px;height:15px;flex:none}
+  .ak-row{display:flex;gap:8px}
+  .ak-row input{flex:1;min-width:0;background:var(--bg-inverted);border:1px solid var(--border);border-radius:10px;color:#fff;padding:10px 12px;font-size:14px;font-family:var(--ff-sans);outline:none}
+  .ak-row input:focus{border-color:var(--ube-4)}
+  .ak-row input::placeholder{color:var(--ube-3);opacity:.55}
+  .ak-eye{background:var(--bg-inverted);border:1px solid var(--border);border-radius:10px;width:42px;flex:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ube-3)}
+  .ak-eye:hover{color:#fff;border-color:var(--ube-4)}
+  .ak-eye svg{width:18px;height:18px}
+  .ak-help{font-size:12px;color:var(--ube-3);margin-top:9px;line-height:1.5}
+  .ak-help a{color:var(--ube-3);font-weight:600;text-decoration:underline;white-space:nowrap}
+  .ak-help a:hover{color:#fff}
+  .apikey.ok{border-color:rgba(60,225,149,.45)}
+  .apikey.ak-warn{border-color:rgba(255,138,138,.6)}
+  .apikey.ak-warn #apiKeyHelp{color:#ff9b9b}
+  .filechip{display:flex;align-items:center;gap:11px;background:var(--ube-9);border:1px solid var(--border);
+     border-radius:10px;padding:9px}
+  .filechip img{width:42px;height:34px;border-radius:6px;object-fit:cover;flex:none}
+  .filechip .fc-t{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+  .filechip .fc-n{font-size:13px;color:#fff;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .filechip .fc-d{font-size:11px;color:var(--ube-4);font-family:var(--ff-mono)}
+  .filechip .fc-x{background:transparent;border:none;color:var(--ube-4);cursor:pointer;padding:4px}
+  .filechip .fc-x:hover{color:#fff}
+
+  .field{display:flex;flex-direction:column;gap:8px}
+  .field>.fl{display:flex;align-items:center;justify-content:space-between}
+  .field .fl .lk{font-size:13px;color:#fff;font-weight:600}
+  .field .fl .hint{font-size:11px;color:var(--ube-4)}
+
+  .segc{display:flex;background:var(--ube-9);border:1px solid var(--border);border-radius:10px;padding:3px;gap:3px}
+  .segc button{flex:1;border:none;background:transparent;color:var(--ube-3);cursor:pointer;border-radius:7px;
+     padding:9px;font-size:13px;font-weight:600;transition:all var(--dur) var(--ease-out)}
+  .segc button:hover{color:#fff}
+  .segc button.on{background:var(--ube-5);color:#fff}
+
+  .selectwrap{position:relative}
+  .selectwrap select{width:100%;appearance:none;background:var(--ube-9);border:1px solid var(--border);
+     border-radius:10px;color:#fff;font-size:13px;font-weight:600;padding:11px 38px 11px 13px;cursor:pointer;outline:none}
+  .selectwrap .i{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--ube-3);pointer-events:none}
+  .selectwrap select option{background:var(--ube-9);color:#fff}
+
+  .est{display:flex;align-items:center;justify-content:space-between;background:rgba(60,225,149,.08);
+     border:1px solid rgba(60,225,149,.3);border-radius:10px;padding:11px 13px}
+  .est .el{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mint-4);font-weight:700}
+  .est .ev{font-family:var(--ff-mono);font-size:13px;color:#fff;text-align:right}
+  .est .ev b{color:var(--mint-3)}
+  #capNote{font-size:11px;color:var(--lemon-4);display:none;align-items:center;gap:6px;margin-top:-8px}
+  #capNote:not([hidden]){display:flex}
+
+  /* advanced */
+  .adv{border-top:1px solid var(--border);padding-top:16px}
+  #advToggle{display:flex;align-items:center;gap:8px;background:none;border:none;color:var(--ube-3);cursor:pointer;
+     font-size:13px;font-weight:600;padding:0;width:100%}
+  #advToggle .chev{margin-left:auto;transition:transform var(--dur) var(--ease-out);width:16px;height:16px;color:var(--ube-3)}
+  #advToggle.open .chev{transform:rotate(180deg)}
+  #advToggle:hover{color:#fff}
+  #advBody{display:flex;flex-direction:column;gap:18px;margin-top:16px}
+
+  /* detail slider */
+  .drange{display:flex;flex-direction:column;gap:9px}
+  .drange input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:999px;
+     background:var(--ube-8);outline:none}
+  .drange input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+     background:var(--ube-4);border:3px solid var(--bg-elevated);box-shadow:0 0 0 1px var(--ube-4);cursor:pointer}
+  .drange input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--ube-4);
+     border:3px solid var(--bg-elevated);cursor:pointer}
+  .dstops{display:flex;justify-content:space-between}
+  .dstops .detail-stop{font-size:10px;color:var(--ube-4);font-weight:600;transition:color var(--dur)}
+  .dstops .detail-stop.on{color:#fff}
+  .sharp-preview{position:relative;margin-top:11px;height:118px;border-radius:8px;overflow:hidden;
+     border:1px solid var(--border);background:var(--ube-9)}
+  .sharp-preview img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.25);
+     transform-origin:60% 40%;transition:filter .12s ease}
+  .sp-cap{position:absolute;bottom:6px;right:8px;font-size:9px;letter-spacing:.06em;text-transform:uppercase;
+     color:#fff;background:rgba(0,0,0,.5);padding:2px 7px;border-radius:4px;pointer-events:none}
+
+  /* toggle */
+  .tgl{width:42px;height:24px;border-radius:999px;background:var(--ube-8);border:1px solid var(--border);
+     cursor:pointer;position:relative;transition:background var(--dur) var(--ease-out);flex:none}
+  .tgl::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;
+     transition:transform var(--dur) var(--ease-out)}
+  .tgl.on{background:var(--mint-5);border-color:var(--mint-5)}
+  .tgl.on::after{transform:translateX(18px)}
+
+  #panelMain,#panelResult,#panelError{display:none}
+  #panelMain{flex-direction:column;gap:18px}
+  #panelError{flex-direction:column;gap:12px}
+  #panelResult{flex-direction:column;gap:14px}
+  .res-summary{background:var(--ube-9);border:1px solid var(--border);border-radius:12px;padding:14px}
+  .res-summary .rs-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:4px 0}
+  .res-summary .rs-row .k{color:var(--ube-3)}
+  .res-summary .rs-row .v{color:#fff;font-weight:600;font-family:var(--ff-mono)}
+  .res-summary .rs-row .v.mint{color:var(--mint-4)}
+
+  /* mobile sticky CTA holder */
+  .mobile-cta{display:none}
+
+  /* ── responsive ─────────────────────────────────────────── */
+  @media(max-width:1080px){
+    #workspace{grid-template-columns:1fr}
+    #panel{position:static}
+    .vC .wb-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:820px){
+    .wrap{padding:0 18px}
+    .topbar{padding:0 18px}
+    .vA-row{grid-template-columns:1fr;gap:28px;max-width:480px}
+    .demo-cmp{max-width:300px}
+    .vB{grid-template-columns:1fr;gap:30px}
+    .vA h1.hero-h{font-size:44px}
+    .vB h1.hero-h{font-size:42px}
+    .vA .hero-sub,.vB .hero-sub{font-size:16px}
+    .topnav{display:none}
+    #switcher{flex-direction:column;gap:8px}
+    .stage-result .cmp{max-width:100%}
+    /* sticky mobile CTA */
+    body.in-workspace{padding-bottom:88px}
+    .mobile-cta{display:block;position:fixed;left:0;right:0;bottom:0;z-index:40;padding:14px 18px;
+       background:rgba(26,12,52,.92);backdrop-filter:blur(10px);border-top:1px solid var(--border)}
+    #workspace[data-phase="result"] ~ .mobile-cta .mc-up,
+    #workspace[data-phase="error"] ~ .mobile-cta{display:none}
+  }
+  @media(max-width:560px){
+    .vA h1.hero-h{font-size:36px}
+    .ucard{padding:18px}
+    .seg button{padding:8px 11px;font-size:11px}
+  }
+  /* ===== SEO content (dark theme, below the tool) ===== */
+  .seo-content{font-family:var(--ff-sans);color:var(--ube-2)}
+  .seo-sec{padding:64px 0}
+  .seo-alt{background:var(--ube-9)}
+  .seo-in{max-width:1080px;margin:0 auto;padding:0 32px}
+  .seo-content h2{font-family:"Plus Jakarta Sans",var(--ff-sans);font-weight:800;color:#fff;font-size:34px;line-height:1.15;letter-spacing:-.02em}
+  .seo-content .center{text-align:center}
+  .seo-content h3{font-family:"Plus Jakarta Sans",var(--ff-sans);font-weight:700;color:#fff;font-size:19px;margin-bottom:8px}
+  .seo-content p{color:var(--ube-2);line-height:1.6;font-size:15px}
+  .seo-intro{color:var(--ube-3);font-size:16px;max-width:680px;margin:12px auto 0}
+  .seo-content a{color:var(--ube-4);text-decoration:underline;text-underline-offset:2px}
+  .seo-content a:hover{color:var(--mint-3)}
+  .seo-trust{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 26px;padding:22px 32px;
+    border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:1080px;margin:0 auto}
+  .seo-trust .ti{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ube-2)}
+  .seo-trust .dot{width:7px;height:7px;border-radius:50%;background:var(--mint-3);box-shadow:0 0 8px var(--mint-4)}
+  .seo-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+  .seo-step{background:rgba(213,184,255,.04);border:1px solid var(--border);border-radius:var(--radius-xl);padding:28px 24px}
+  .seo-num{width:38px;height:38px;border-radius:10px;background:var(--ube-5);color:#fff;font-weight:800;
+    display:grid;place-items:center;font-size:17px;margin-bottom:14px}
+  .seo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:40px}
+  .seo-card{background:rgba(213,184,255,.04);border:1px solid var(--border);border-radius:var(--radius-xl);padding:26px}
+  .seo-ic{width:44px;height:44px;border-radius:11px;background:rgba(131,88,212,.18);color:var(--ube-3);
+    display:grid;place-items:center;margin-bottom:14px}
+  .seo-ic svg{width:22px;height:22px}
+  .seo-uses{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:40px}
+  .seo-use{background:rgba(213,184,255,.04);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px}
+  .seo-use.full{grid-column:1/-1}
+  .seo-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px}
+  .seo-gbox{position:relative;aspect-ratio:3/4;border-radius:var(--radius-lg);overflow:hidden;background:#0d0a18}
+  .seo-gbox img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .seo-gbox .g-before{filter:blur(3px) saturate(.82) brightness(.97);clip-path:inset(0 50% 0 0)}
+  .seo-gdiv{position:absolute;top:0;bottom:0;left:50%;width:2px;background:rgba(255,255,255,.85);transform:translateX(-50%);z-index:2}
+  .seo-glab{position:absolute;top:8px;font-size:9px;font-weight:700;padding:3px 7px;border-radius:12px;z-index:2}
+  .seo-glab.l{left:8px;background:rgba(13,10,24,.82);color:#fff}
+  .seo-glab.r{right:8px;background:var(--mint-4);color:#10221d}
+  .seo-gcap{margin-top:10px;font-weight:700;color:#fff;font-size:14px}
+  .seo-gcap span{display:block;font-weight:400;color:var(--ube-3);font-size:12px;margin-top:2px}
+  .seo-explain-card{background:var(--ube-8);border:1px solid var(--border);border-radius:var(--radius-2xl);padding:48px 52px;max-width:1000px;margin:0 auto;text-align:left}
+  .seo-explain-card h2{color:#fff;margin:0}
+  .seo-explain-card h3{color:#fff}
+  .seo-explain-card p{color:var(--ube-2)}
+  .seo-explain{max-width:820px;margin:22px auto 0}
+  .seo-explain-card .seo-explain{max-width:none;margin:18px 0 0}
+  .seo-explain p{margin-bottom:16px}
+  .seo-explain h3{margin-top:22px}
+  .seo-faq{max-width:760px;margin:40px auto 0}
+  .seo-faq details{border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:10px;background:rgba(213,184,255,.03)}
+  .seo-faq summary{cursor:pointer;padding:16px 18px;font-weight:600;color:#fff;list-style:none;
+    display:flex;justify-content:space-between;align-items:center;gap:16px}
+  .seo-faq summary::-webkit-details-marker{display:none}
+  .seo-faq summary::after{content:"+";color:var(--ube-4);font-size:20px;line-height:1}
+  .seo-faq details[open] summary::after{content:"\2013"}
+  .seo-faq .fa{padding:0 18px 16px;color:var(--ube-2);line-height:1.6;font-size:14px}
+  .seo-cta{background:linear-gradient(115deg,var(--ube-7),var(--ube-5));text-align:center;padding:56px 40px;border-radius:var(--radius-2xl)}
+  .seo-cta h2{color:#fff}
+  .seo-cta p{color:rgba(255,255,255,.85);max-width:560px;margin:12px auto 0}
+  .seo-cta .row{display:flex;gap:14px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+  .seo-cta .b1{background:#fff;color:var(--ube-7);padding:12px 22px;border-radius:999px;font-weight:700;text-decoration:none}
+  .seo-cta .b2{background:rgba(255,255,255,.14);color:#fff;padding:12px 22px;border-radius:999px;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,.3)}
+  .seo-tools{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px}
+  .seo-tool{display:flex;flex-direction:column;align-items:center;gap:10px;padding:24px;text-align:center;
+    background:rgba(213,184,255,.04);border:1px solid var(--border);border-radius:var(--radius-lg);
+    color:#fff;text-decoration:none;font-weight:600;font-size:14px}
+  .seo-tool:hover{border-color:var(--border-strong)}
+  .seo-tool .em{font-size:26px}
+  .seo-footer{border-top:1px solid var(--border);padding:30px 32px;display:flex;justify-content:space-between;
+    align-items:center;gap:16px;flex-wrap:wrap;max-width:1080px;margin:0 auto;font-size:13px;color:var(--ube-3)}
+  .seo-footer a{color:var(--ube-3);text-decoration:none;margin-left:18px}
+  .seo-footer a:hover{color:#fff}
+  .seo-footer .fl{display:flex;flex-wrap:wrap}
+  @media(max-width:820px){
+    .seo-content h2{font-size:27px}
+    .seo-steps,.seo-grid,.seo-uses,.seo-tools{grid-template-columns:1fr}
+    .seo-gallery{grid-template-columns:1fr 1fr}
+    .seo-in,.seo-trust{padding-left:18px;padding-right:18px}
+    .seo-footer{flex-direction:column;text-align:center;padding-left:18px;padding-right:18px}
+    .seo-footer a{margin:0 9px}
+  }
+</style>
+</head>
+<body class="floyo-base surface-violet">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="shSoft"><feGaussianBlur stdDeviation="0.5"/></filter>
+  <filter id="shSharp" x="0" y="0" width="100%" height="100%">
+    <feConvolveMatrix order="3" preserveAlpha="true" divisor="1" edgeMode="duplicate"
+      kernelMatrix="0 -0.25 0  -0.25 2 -0.25  0 -0.25 0"/>
+  </filter>
+  <filter id="shVery" x="0" y="0" width="100%" height="100%">
+    <feConvolveMatrix order="3" preserveAlpha="true" divisor="1" edgeMode="duplicate"
+      kernelMatrix="0 -0.5 0  -0.5 3 -0.5  0 -0.5 0"/>
+  </filter>
+</defs></svg>
+
+  <!-- TOPBAR (full width) -->
+  <header class="topbar">
+      <a class="brand" href="https://www.floyo.ai" target="_blank" rel="noopener" aria-label="Floyo home">
+        <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 341 149" fill="none" role="img" aria-label="Floyo">
+          <path d="M 116.309 123.079 C 112.414 125.021 107.16 122.595 104.208 118.145 C 95.191 104.568 94.459 48.777 97.342 35.597 C 98.884 28.548 101.2 24.953 106.446 25.158 C 111.004 25.332 113.146 29.302 113.018 33.551 C 112.368 54.826 108.849 97.149 117.293 111.877 C 121.019 118.374 119.311 121.581 116.309 123.079 Z" fill="currentColor" fill-rule="nonzero"></path>
+          <path d="M 195.962 90.451 C 177.123 89.487 173.072 60.879 173.919 44.392 C 174.327 36.456 175.247 18.507 185.279 19.018 C 188.95 19.206 191.005 22.129 191.769 26.328 C 192.076 29.896 190.639 48.307 191.531 59.618 C 193.765 82.995 204.576 73.141 218.119 57.796 C 229.182 45.383 240.011 27.941 245.283 23.189 C 247.21 21.453 249.599 20.348 252.167 20.48 C 257.179 20.736 260.973 25.707 260.689 31.202 C 260.195 40.847 220.128 111.763 218.773 138.137 C 218.558 142.285 215.217 145.301 211.789 145.127 C 193.559 144.195 211.652 90.515 214.778 82.109 C 208.919 86.34 203.29 90.826 195.953 90.451 L 195.962 90.451 Z" fill="currentColor" fill-rule="nonzero"></path>
+          <path class="dot" d="M 302.688 122.81 C 306.532 124.244 311.05 129.462 309.622 134.464 C 308.336 138.964 304.006 142.075 299.566 141.97 C 298.811 141.952 298.051 141.842 297.3 141.627 C 292.028 140.124 289.314 134.656 290.897 129.128 C 292.17 124.674 296.051 122.321 300.106 122.417 C 301.195 122.444 301.987 122.549 302.683 122.81 L 302.688 122.81 Z M 300.17 119.84 C 294.577 119.708 289.803 123.057 288.279 128.383 C 287.323 131.728 287.616 135.186 289.099 138.119 C 290.627 141.134 293.277 143.309 296.554 144.245 C 297.506 144.519 298.5 144.665 299.502 144.693 C 305.274 144.83 310.629 140.842 312.24 135.218 C 313.137 132.084 312.679 128.781 310.954 125.921 C 309.278 123.143 306.61 121.11 303.438 120.206 C 302.683 119.991 301.534 119.881 300.17 119.849 L 300.17 119.84 Z" fill="currentColor" fill-rule="nonzero"></path>
+          <path d="M 331.568 48.444 C 332.012 48.444 332.447 48.508 332.895 48.631 C 336.955 49.787 337.701 51.998 337.894 53.798 C 338.136 56.055 337.459 58.842 336.731 61.45 L 336.383 62.67 C 333.756 71.857 328.991 80.889 324.382 89.615 L 324.359 89.656 L 324.346 89.688 C 321.087 95.86 317.718 102.238 315.105 108.675 C 314.482 110.246 312.967 112.878 309.841 112.878 C 309.796 112.878 309.754 112.878 309.709 112.878 C 309.173 112.864 308.61 112.777 308.033 112.613 C 307.173 112.366 304.546 111.622 304.454 105.349 C 304.39 101.073 305.585 96.413 306.102 94.609 C 307.507 89.702 311.32 77.125 316.363 66.334 C 323.641 50.765 329.014 48.444 331.568 48.444 Z M 331.568 45.397 C 325.737 45.397 319.7 51.984 313.594 65.046 C 308.454 76.042 304.592 88.797 303.168 93.768 C 301.887 98.24 298.394 113.033 307.196 115.541 C 308.033 115.779 308.848 115.902 309.64 115.921 C 309.709 115.921 309.777 115.921 309.846 115.921 C 313.402 115.921 316.386 113.723 317.947 109.794 C 320.501 103.508 323.838 97.185 327.064 91.073 C 331.751 82.191 336.603 73.009 339.322 63.497 C 340.241 60.295 341.276 56.663 340.933 53.46 C 340.507 49.545 338.086 46.927 333.733 45.689 C 333.014 45.484 332.291 45.383 331.568 45.383 L 331.568 45.397 Z" fill="currentColor" fill-rule="nonzero"></path>
+          <path d="M 93.163 9.091 C 87.186 -7.863 55.838 3.408 45.439 7.067 C 32.5 11.608 -6.349 30.7 0.892 51.231 C 2.805 56.653 8.59 59.801 13.094 58.22 C 16.907 56.882 18.902 53.328 21.52 50.075 C 23.658 78.23 32.454 112.526 45.357 140.421 C 46.922 143.811 52.003 151.217 58.909 148.357 C 64.113 146.2 64.196 140.545 62.054 136.287 C 55.435 123.148 50.831 101.923 48.268 81.305 C 57.797 76.38 67.917 77.066 75.968 73.47 C 80.998 71.222 83.158 65.567 81.007 60.77 C 75.753 49.052 47.792 62.108 45.952 63.296 C 44.528 51.592 43.329 40.755 42.386 33.025 C 51.705 27.42 59.651 23.148 69.802 19.521 C 81.648 15.281 85.094 18.315 89.396 17.693 C 92.728 17.214 94.468 12.787 93.168 9.095 L 93.163 9.091 Z" fill="currentColor" fill-rule="nonzero"></path>
+          <path d="M 284.064 89.026 C 272.814 81.296 258.634 88.962 257 101.822 C 256.538 103.915 256.204 106.354 256.913 108.255 C 260.062 117.241 272.75 114.34 277.537 108.195 C 277.423 108.054 277.436 108.131 277.537 107.994 C 279.267 106.053 280.595 103.325 279.826 100.799 C 279.409 99.319 278.26 97.898 276.759 97.185 C 273.358 95.312 275.418 90.177 279.139 91.1 C 286.188 92.781 290.234 100.639 288.696 107.478 C 288.252 109.849 287.391 111.951 286.247 113.988 C 286.256 114.025 286.128 113.97 286.105 113.979 L 285.95 114.226 C 282.206 120.279 276.21 124.601 269.308 126.487 C 253.828 130.745 240.23 119.288 240.505 103.49 C 240.812 87.23 257.202 73.342 273.207 75.412 C 279.226 76.12 284.828 79.29 288.774 83.626 C 291.602 86.828 287.57 91.36 284.064 89.021 L 284.064 89.026 Z" fill="currentColor" fill-rule="nonzero"></path>
+          <path d="M 158.751 68.335 C 149.666 68.906 143.322 73.566 140.526 81.812 C 138.544 87.381 138.342 96.08 143.794 99.492 C 147.789 101.457 153.506 100.429 157.108 97.756 C 161.351 94.604 163.955 87.34 162.495 82.319 C 161.296 78.916 157.612 79.459 154.312 80.547 C 152.375 81.282 150.201 80.282 149.506 78.336 C 148.874 76.572 149.666 74.644 151.291 73.808 C 154.279 72.282 157.525 71.236 161.113 71.519 C 165.067 71.702 169.242 74.516 171.04 78.034 C 172.844 81.278 173.361 84.823 173.338 88.318 C 173.425 98.537 168.07 109.26 158.495 113.897 C 141.523 122.435 124.003 111.896 122.936 93.147 C 122.007 80.378 128.928 66.942 140.686 61.405 C 146.673 58.568 153.717 58.298 159.822 60.171 C 164.312 61.597 163.388 68.134 158.751 68.34 L 158.751 68.335 Z" fill="currentColor" fill-rule="nonzero"></path>
+        </svg>
+      </a>
+      <nav class="topnav">
+        <a href="https://www.floyo.ai/workflows" target="_blank" rel="noopener">Workflows</a>
+        <a class="apidocs-btn" href="https://docs.floyo.ai/floyo-api-introduction" target="_blank" rel="noopener">API Docs</a>
+      </nav>
+    </header>
+
+  <div class="wrap">
+    <!-- ════════ MAIN SCREEN · CENTERED ════════ -->
+    <section class="variant" data-v="A">
+      <div class="vA">
+        <div class="head">
+          <h1 class="hero-h">AI Image Upscaler</h1>
+          <p class="hero-sub">The AI photo upscaler that actually recovers detail. Boost any image up to 8K resolution in one click. Powered by Seed VR 2.</p>
+        </div>
+
+        <div class="vA-row">
+          <div class="demo-cmp" aria-hidden="true">
+            <img class="demo-after" src="assets/sample.jpg" alt=""
+                 onerror="this.onerror=null;this.src='assets/icons/sample.jpg'">
+            <img class="demo-before" src="assets/sample.jpg" alt=""
+                 onerror="this.onerror=null;this.src='assets/icons/sample.jpg'">
+            <span class="demo-tag demo-tag-b">BEFORE</span>
+            <span class="demo-tag demo-tag-a">AFTER</span>
+            <div class="demo-divider"><span class="demo-handle"></span></div>
+          </div>
+
+          <div class="vA-right">
+          <div class="ucard">
+            <div class="ucard-head">
+              <div class="t"><span class="px"></span><span class="ai">AI Enhance</span></div>
+              <div class="ba-chip">
+                <span class="lab">Before / after</span>
+                <div class="ba-thumb"><span class="b"></span><span class="a"></span></div>
+              </div>
+            </div>
+            <div class="dz" tabindex="0">
+              <span class="i dz-cloud" style="--u:url(assets/icons/cloud.svg)"></span>
+              <button class="btn btn-primary browse"><span class="i" style="--u:url(assets/icons/image.svg)"></span>Browse files</button>
+              <p class="dz-help">Drag &amp; drop your image, or paste from clipboard</p>
+              <p class="dz-or">No image handy? <a class="sample-link">Try a sample</a></p>
+              <p class="dz-err" hidden></p>
+            </div>
+          </div>
+            <a class="powered-by" href="https://www.floyo.ai" target="_blank" rel="noopener">
+              <span class="i" style="--u:url(assets/icons/bolt.svg)"></span> Powered by <b>Floyo</b>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════ WORKSPACE (selected / processing / result / error) ════════ -->
+    <section id="workspace" style="display:none" data-phase="selected">
+      <!-- STAGE -->
+      <div class="stage">
+        <div class="stage-top">
+          <div class="lt"><span class="dot"></span><span id="stageLabel">Ready to upscale</span></div>
+          <div class="rt">
+            <button class="iconbtn" id="changeImg"><span class="i" style="--u:url(assets/icons/reload.svg)"></span>Change image</button>
+          </div>
+        </div>
+        <div class="stage-body" style="padding:0">
+
+          <!-- selected -->
+          <div class="pblock stage-selected">
+            <div class="preview-wrap"><img class="ws-img" alt="Selected image preview"></div>
+          </div>
+
+          <!-- processing -->
+          <div class="pblock stage-processing">
+            <div class="preview-wrap"><img class="ws-img" alt="Image being upscaled"></div>
+            <div class="proc-over">
+              <span class="i proc-spin" style="--u:url(assets/icons/loader.svg);width:42px;height:42px"></span>
+              <div class="ps" id="progStatus">Upscaling…</div>
+              <div class="proc-bar"><span id="progBar"></span></div>
+              <div class="proc-meta"><span id="progPct">0%</span><span>·</span><span id="progElapsed">0:00</span><span>·</span><span class="out-dims">—</span></div>
+              <button class="iconbtn" id="cancelBtn" style="margin-top:6px"><span class="i" style="--u:url(assets/icons/close.svg)"></span>Cancel</button>
+            </div>
+          </div>
+
+          <!-- result -->
+          <div class="pblock stage-result">
+            <div class="preview-wrap">
+              <div class="cmp" id="cmpFrame">
+                <img id="cmpAfter" alt="Upscaled result">
+                <div class="clip" id="cmpClip"><img id="cmpBefore" alt="Original"></div>
+                <span class="tag before">Before</span>
+                <span class="tag after">After · 8K</span>
+                <div class="handle" id="cmpHandle" tabindex="0" role="slider" aria-label="Compare before and after" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                  <div class="grip"><span class="i" style="--u:url(assets/icons/expand.svg)"></span></div>
+                </div>
+              </div>
+              <div class="res-trans" id="resTransition">—</div>
+            </div>
+          </div>
+
+          <!-- error -->
+          <div class="pblock stage-error">
+            <span class="i ic" style="--u:url(assets/icons/alert.svg);width:56px;height:56px"></span>
+            <div class="et">Upscale failed</div>
+            <div class="em" id="errText">Something went wrong while processing your image.</div>
+            <button class="btn btn-primary btn-lg" id="retryBtn"><span class="i" style="--u:url(assets/icons/reload.svg)"></span>Try again</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- PANEL -->
+      <aside id="panel">
+        <div class="apikey" id="apiKeyCard">
+          <div class="ak-lab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3 19 4"/><path d="m16 6 2.5 2.5"/><path d="m19.5 7-2 2"/></svg>
+            FLOYO API KEY
+          </div>
+          <div class="ak-row">
+            <input type="password" id="apiKeyInput" placeholder="Paste your Floyo API key" autocomplete="off" autocapitalize="off" spellcheck="false">
+            <button type="button" id="apiKeyToggle" class="ak-eye" title="Show key" aria-label="Show key">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="ak-help"><span id="apiKeyHelp">Used to run this workflow on your account.</span> <a href="https://docs.floyo.ai/how-to-generate-and-use-floyo-api-key" target="_blank" rel="noopener">Find your key &rarr;</a></div>
+        </div>
+
+        <div class="filechip">
+          <img class="ws-img" alt="">
+          <div class="fc-t">
+            <span class="fc-n" id="fileName">image.png</span>
+            <span class="fc-d"><span id="srcDims">—</span> · original</span>
+          </div>
+          <button class="fc-x tryanother" title="Remove"><span class="i" style="--u:url(assets/icons/close.svg);width:16px;height:16px"></span></button>
+        </div>
+
+        <!-- MAIN controls -->
+        <div id="panelMain">
+          <div class="field">
+            <div class="fl"><span class="lk">Upscale factor</span></div>
+            <div class="segc" role="radiogroup" aria-label="Upscale factor">
+              <button data-factor="2" role="radio" aria-checked="false">2×</button>
+              <button data-factor="4" role="radio" aria-checked="true">4×</button>
+              <button data-factor="8" role="radio" aria-checked="false">8×</button>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-block" id="upscaleBtn"><span class="i" style="--u:url(assets/icons/bolt.svg)"></span>Upscale image</button>
+
+          <!-- ADVANCED -->
+          <div class="adv">
+            <button id="advToggle" aria-expanded="false">
+              <span class="i" style="--u:url(assets/icons/command.svg);width:15px;height:15px"></span>
+              Advanced settings
+              <span class="i chev" style="--u:url(assets/icons/chevron-down.svg)"></span>
+            </button>
+            <div id="advBody" hidden>
+              <div class="field drange">
+                <div class="fl"><span class="lk">Detail / sharpness</span><span class="hint" id="detailLabel">Very sharp</span></div>
+                <input type="range" id="detailRange" min="0" max="3" step="1" value="3" aria-label="Detail sharpness">
+                <div class="dstops">
+                  <span class="detail-stop">Soft</span><span class="detail-stop">Normal</span><span class="detail-stop">Sharp</span><span class="detail-stop">Very sharp</span>
+                </div>
+                <div class="sharp-preview">
+                  <img id="sharpPrev" alt="Sharpness preview">
+                  <span class="sp-cap">Live preview · approximate</span>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="fl">
+                  <span class="lk">Color correction</span>
+                  <button class="tgl on" id="colorToggle" role="switch" aria-checked="true" aria-label="Color correction"></button>
+                </div>
+                <span class="hint">Matches output colors to the original.</span>
+              </div>
+
+              <div class="field">
+                <div class="fl"><span class="lk">Output format</span></div>
+                <div class="segc" role="radiogroup" aria-label="Output format">
+                  <button data-fmt="jpg" role="radio" aria-checked="false">JPG</button>
+                  <button data-fmt="png" role="radio" aria-checked="true">PNG</button>
+                  <button data-fmt="webp" role="radio" aria-checked="false">WEBP</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESULT actions -->
+        <div id="panelResult">
+          <div class="res-summary">
+            <div class="rs-row"><span class="k">Resolution</span><span class="v"><span class="out-dims">—</span></span></div>
+            <div class="rs-row"><span class="k">Tier</span><span class="v mint"><span class="out-tier">8K</span></span></div>
+            <div class="rs-row"><span class="k">Format</span><span class="v" id="resFmt">PNG</span></div>
+          </div>
+          <button class="btn btn-primary btn-block" id="downloadBtn"><span class="i" style="--u:url(assets/icons/arrow-down.svg)"></span>Download</button>
+          <button class="btn btn-ghost btn-block tryanother"><span class="i" style="--u:url(assets/icons/reload.svg)"></span>Try another</button>
+        </div>
+
+        <!-- ERROR actions -->
+        <div id="panelError">
+          <button class="btn btn-ghost btn-block tryanother"><span class="i" style="--u:url(assets/icons/image.svg)"></span>Choose another image</button>
+        </div>
+      </aside>
+    </section>
+
+    <!-- mobile sticky CTA -->
+    <div class="mobile-cta">
+      <button class="btn btn-primary btn-block mc-up" onclick="document.getElementById('upscaleBtn')&&document.getElementById('upscaleBtn').click()"><span class="i" style="--u:url(assets/icons/bolt.svg)"></span>Upscale image</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════ SEO CONTENT ════════════════════ -->
+  <div class="seo-content">
+
+    <!-- trust bar -->
+    <div class="seo-trust">
+      <div class="ti"><span class="dot"></span> Powered by Seed VR 2</div>
+      <div class="ti"><span class="dot"></span> Up to 8K Resolution</div>
+      <div class="ti"><span class="dot"></span> Real Detail Recovery</div>
+      <div class="ti"><span class="dot"></span> Open-Source Model</div>
+      <div class="ti"><span class="dot"></span> API Available</div>
+    </div>
+
+    <!-- how to -->
+    <section class="seo-sec"><div class="seo-in">
+      <h2 class="center">How to Upscale an Image with AI</h2>
+      <p class="seo-intro center">Three steps. Under 30 seconds. No software to install.</p>
+      <div class="seo-steps">
+        <div class="seo-step"><div class="seo-num">1</div><h3>Upload your image</h3><p>Drag and drop any JPG, PNG, or WebP. Or paste from your clipboard. No file size limit on standard images.</p></div>
+        <div class="seo-step"><div class="seo-num">2</div><h3>Upscale with AI</h3><p>Seed VR 2 analyzes your image and reconstructs detail at higher resolution. Choose 2x, 4x, or 8x.</p></div>
+        <div class="seo-step"><div class="seo-num">3</div><h3>Download</h3><p>Get your upscaled image in PNG, JPG, or WebP. Full resolution, ready for print, web, or your product pipeline.</p></div>
+      </div>
+    </div></section>
+
+    <!-- what makes different -->
+    <section class="seo-sec seo-alt"><div class="seo-in">
+      <h2 class="center">What Makes This Upscaler Different</h2>
+      <p class="seo-intro center">Not another picture upscaler that just stretches pixels. Here is what you actually get.</p>
+      <div class="seo-grid">
+        <div class="seo-card"><div class="seo-ic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><h3>Recover Lost Detail, Not Just Resize</h3><p>Most upscalers just stretch pixels. Seed VR 2 reconstructs textures, sharpens edges, and fills in detail that was never in the original image. Faces, text, fabric, fur: it handles all of them.</p></div>
+        <div class="seo-card"><div class="seo-ic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg></div><h3>Up to 8K Resolution</h3><p>Go from a small thumbnail to print-ready resolution. Use it as a photo upscaler at 2x for quick social posts, or push to 4K or 8K for large-format printing and professional photography.</p></div>
+        <div class="seo-card"><div class="seo-ic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg></div><h3>Fast. 10 to 30 Seconds Per Image.</h3><p>Upload, pick your scale, download. Most images process in under 30 seconds. No desktop app to install, no GPU to manage. It runs on Floyo's cloud infrastructure.</p></div>
+        <div class="seo-card"><div class="seo-ic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg></div><h3>Built on an Open-Source Workflow</h3><p>This tool runs on a ComfyUI workflow powered by Seed VR 2. You can see the exact workflow, customize it, or build your own version using the Floyo API.</p></div>
+      </div>
+    </div></section>
+
+    <!-- use cases -->
+    <section class="seo-sec"><div class="seo-in">
+      <h2 class="center">Who Uses Our AI Image Upscaler?</h2>
+      <p class="seo-intro center">A picture upscaler for photographers, sellers, designers, and developers. Here is how they use it.</p>
+      <div class="seo-uses">
+        <div class="seo-use"><h3>Photographers</h3><p>Upscale older photos or crop-heavy shots to print resolution without losing sharpness. Export at 300 DPI for gallery prints.</p></div>
+        <div class="seo-use"><h3>Ecommerce Sellers</h3><p>Turn phone photos into high-res product images. Use the AI photo upscaler to clean up compression artifacts and upscale product shots to 4K for marketplace listings.</p></div>
+        <div class="seo-use"><h3>Designers and Marketers</h3><p>Upscale stock images, client assets, or social media visuals. Get 4K or 8K output from low-res source files.</p></div>
+        <div class="seo-use"><h3>Game Developers and Pixel Artists</h3><p>Upscale sprites, textures, and pixel art while preserving the visual style.</p></div>
+        <div class="seo-use full"><h3>Developers</h3><p>Use the <a href="https://docs.floyo.ai">Floyo API</a> to batch-process thousands of images programmatically. Build upscaling into your own product.</p></div>
+      </div>
+    </div></section>
+
+    <!-- see the difference -->
+    <section class="seo-sec seo-alt"><div class="seo-in">
+      <h2 class="center">See the Difference</h2>
+      <p class="seo-intro center">Real examples. Each pair shows the recovered detail, before and after.</p>
+      <div class="seo-gallery">
+        <div class="seo-gitem"><div class="seo-gbox"><img class="g-after" src="assets/gallery-portrait.jpg" alt="Portrait sample" onerror="this.onerror=null;this.src='assets/icons/gallery-portrait.jpg'"><img class="g-before" src="assets/gallery-portrait.jpg" alt="" aria-hidden="true" onerror="this.onerror=null;this.src='assets/icons/gallery-portrait.jpg'"><span class="seo-glab l">Before</span><span class="seo-glab r">After</span><div class="seo-gdiv"></div></div><div class="seo-gcap">Portrait<span>Face recovery, skin texture, hair detail</span></div></div>
+        <div class="seo-gitem"><div class="seo-gbox"><img class="g-after" src="assets/gallery-landscape.jpg" alt="Landscape sample" onerror="this.onerror=null;this.src='assets/icons/gallery-landscape.jpg'"><img class="g-before" src="assets/gallery-landscape.jpg" alt="" aria-hidden="true" onerror="this.onerror=null;this.src='assets/icons/gallery-landscape.jpg'"><span class="seo-glab l">Before</span><span class="seo-glab r">After</span><div class="seo-gdiv"></div></div><div class="seo-gcap">Landscape<span>Foliage detail, sky grain removal</span></div></div>
+        <div class="seo-gitem"><div class="seo-gbox"><img class="g-after" src="assets/gallery-product.jpg" alt="Product sample" onerror="this.onerror=null;this.src='assets/icons/gallery-product.jpg'"><img class="g-before" src="assets/gallery-product.jpg" alt="" aria-hidden="true" onerror="this.onerror=null;this.src='assets/icons/gallery-product.jpg'"><span class="seo-glab l">Before</span><span class="seo-glab r">After</span><div class="seo-gdiv"></div></div><div class="seo-gcap">Product Photo<span>Text sharpness, edge clarity</span></div></div>
+        <div class="seo-gitem"><div class="seo-gbox"><img class="g-after" src="assets/gallery-old.jpg" alt="Old photo sample" onerror="this.onerror=null;this.src='assets/icons/gallery-old.jpg'"><img class="g-before" src="assets/gallery-old.jpg" alt="" aria-hidden="true" onerror="this.onerror=null;this.src='assets/icons/gallery-old.jpg'"><span class="seo-glab l">Before</span><span class="seo-glab r">After</span><div class="seo-gdiv"></div></div><div class="seo-gcap">Old Photo<span>Low-res restoration, recovered detail</span></div></div>
+      </div>
+    </div></section>
+
+    <!-- why seed vr2 -->
+    <section class="seo-sec"><div class="seo-in">
+      <h2 class="center">Why Seed VR 2 Produces Better Results</h2>
+      <p class="seo-intro center">Most upscalers sharpen what is already there. Seed VR 2 generates what should be there.</p>
+      <div class="seo-grid">
+        <div class="seo-card"><div class="seo-ic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg></div><h3>Diffusion-Based, Not Filter-Based</h3><p>Older models like Real-ESRGAN apply learned sharpening filters. Seed VR 2 uses a diffusion architecture that generates new, plausible detail pixel by pixel. The difference is visible on complex textures: skin pores, individual hairs, woven fabric, tree bark.</p></div>
+        <div class="seo-card"><div class="seo-ic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg></div><h3>Faces That Look Like Faces</h3><p>Face upscaling is where most tools break. Seed VR 2 is trained on high-fidelity face data, so it recovers realistic eyes, skin texture, and facial structure instead of the waxy, over-smoothed look you get from generic upscalers.</p></div>
+        <div class="seo-card"><div class="seo-ic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z"/></svg></div><h3>Handles Every Image Type</h3><p>Portraits, landscapes, product shots, screenshots, pixel art, old scanned photos. Seed VR 2 adapts to the content rather than applying one strategy to everything. Text stays sharp. Gradients stay smooth. Edges stay clean.</p></div>
+        <div class="seo-card"><div class="seo-ic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg></div><h3>Open Source, Not a Black Box</h3><p>Seed VR 2 is developed by ByteDance and available as an open-source model. You can inspect the architecture, read the paper, and verify the results. Most competitors hide their models behind "proprietary AI" with no way to evaluate what you are getting.</p></div>
+      </div>
+    </div></section>
+
+    <!-- build into product -->
+    <section class="seo-sec seo-alt"><div class="seo-in">
+      <h2 class="center">Build Upscaling Into Your Product</h2>
+      <p class="seo-intro center">This tool runs on the Floyo API. Everything you see here, you can call programmatically.</p>
+      <div class="seo-grid">
+        <div class="seo-card"><div class="seo-ic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg></div><h3>One API Call</h3><p>Send an image, specify the workflow, get the upscaled result back. The Floyo API handles GPU allocation, model loading, and queue management. No infrastructure to set up.</p></div>
+        <div class="seo-card"><div class="seo-ic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6.878V6a2.25 2.25 0 012.25-2.25h7.5A2.25 2.25 0 0118 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 004.5 9v.878m13.5-3A2.25 2.25 0 0119.5 9v.878m-15 0A2.25 2.25 0 003 12v8.25A2.25 2.25 0 005.25 22.5h13.5A2.25 2.25 0 0021 20.25V12a2.25 2.25 0 00-1.5-2.122"/></svg></div><h3>Batch Processing</h3><p>Upscale hundreds or thousands of images in a single job. Process an entire product catalog, a photo archive, or user-uploaded content at scale.</p></div>
+        <div class="seo-card"><div class="seo-ic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/></svg></div><h3>Customize the Workflow</h3><p>The upscaler runs as a ComfyUI workflow. Swap in a different model, add pre-processing steps, chain it with face restoration or background removal. You control the pipeline.</p></div>
+        <div class="seo-card"><div class="seo-ic"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg></div><h3>Team Collaboration</h3><p>Floyo is the only platform with team collaboration for ComfyUI. Share workflows, run history, and assets across your team. Everyone works from the same pipeline.</p></div>
+      </div>
+    </div></section>
+
+    <!-- explainer -->
+    <section class="seo-sec"><div class="seo-in">
+      <div class="seo-explain-card">
+      <h2>How Does AI Image Upscaling Work?</h2>
+      <div class="seo-explain">
+        <p>An AI image upscaler is a tool that uses a neural network to increase image resolution while adding realistic detail. Unlike simple interpolation (which blurs the image as it stretches), AI upscaling models are trained on millions of image pairs at different resolutions. The model learns what high-resolution detail should look like for a given low-resolution input. When you upload an image, the AI analyzes patterns, textures, and edges, then generates new pixels that match what the higher-resolution version would look like. The result is a larger, sharper image with recovered detail rather than blurry enlargement.</p>
+        <h3>What Is Seed VR 2?</h3>
+        <p>Seed VR 2 is an image super-resolution model developed by ByteDance. It uses a diffusion-based architecture to generate high-quality upscaled images, handling complex textures like skin, hair, fabric, and natural scenes with high fidelity. Unlike older upscaling models (Real-ESRGAN, BSRGAN), Seed VR 2 can generate plausible new detail rather than just sharpening existing pixels. Floyo runs Seed VR 2 as a managed ComfyUI workflow through its API, so you get state-of-the-art quality without setting up infrastructure.</p>
+        <h3>What Is Floyo?</h3>
+        <p>Floyo is a platform for running AI workflows. It started as ComfyUI Flow, a visual workflow builder for AI tasks. This image upscaler runs on a Floyo-hosted ComfyUI workflow using Seed VR 2. If you are a developer, you can use the Floyo API to build image upscaling (or any AI workflow) into your own product. Floyo handles GPU infrastructure, model loading, and scaling so you do not have to.</p>
+      </div>
+      </div>
+    </div></section>
+
+    <!-- faq -->
+    <section class="seo-sec seo-alt"><div class="seo-in">
+      <h2 class="center">Frequently Asked Questions</h2>
+      <div class="seo-faq">
+        <details><summary>How do I get started?</summary><p class="fa">Create a Floyo account and get an API key. Then upload your image and choose your upscale factor. The tool runs on the same Floyo API that powers batch processing and custom workflows.</p></details>
+        <details><summary>What image formats do you support?</summary><p class="fa">JPG, PNG, and WebP for upload. Download in any of those formats. We recommend PNG for maximum quality.</p></details>
+        <details><summary>How much can I upscale an image?</summary><p class="fa">Up to 8x the original resolution. A 1000x1000 image becomes 8000x8000. You can choose 2x, 4x, or 8x.</p></details>
+        <details><summary>Will upscaling make a blurry photo sharp?</summary><p class="fa">The AI can recover significant detail from blurry or low-resolution images, but results depend on the source quality. It works best on images that are low-resolution but otherwise clean. Heavily compressed or extremely blurry images will improve but will not look like they were shot at 8K.</p></details>
+        <details><summary>Can I upscale images for print?</summary><p class="fa">Yes. Upscaling to 4x or 8x typically gives you enough resolution for high-quality printing at 300 DPI. A 1000px image at 4x becomes 4000px, which prints at about 13 inches at 300 DPI.</p></details>
+        <details><summary>What AI model powers this tool?</summary><p class="fa">Seed VR 2 by ByteDance. It is a diffusion-based super-resolution model that generates realistic detail rather than just sharpening pixels. It runs as a ComfyUI workflow on Floyo's infrastructure.</p></details>
+        <details><summary>How long does it take?</summary><p class="fa">Most images process in 10 to 30 seconds depending on the original size and the upscale factor.</p></details>
+        <details><summary>Do you store my images?</summary><p class="fa">No. Images are processed on our servers and deleted after your session. We do not store, share, or use your images for training.</p></details>
+        <details><summary>Can I batch process multiple images?</summary><p class="fa">The web tool handles one image at a time. For batch processing, use the <a href="https://docs.floyo.ai">Floyo API</a> to upscale hundreds or thousands of images programmatically.</p></details>
+        <details><summary>What is Floyo?</summary><p class="fa">Floyo is a platform for running AI workflows. It started as ComfyUI Flow, a visual workflow builder for AI tasks. This image upscaler runs on a Floyo-hosted ComfyUI workflow using Seed VR 2. If you are a developer, you can use the Floyo API to build image upscaling (or any AI workflow) into your own product. <a href="https://floyo.ai">Try it at floyo.ai.</a></p></details>
+        <details><summary>What is ComfyUI?</summary><p class="fa">ComfyUI is an open-source visual workflow builder for AI image and video generation. It lets you chain together AI models, processors, and transformations into custom pipelines. Floyo hosts ComfyUI workflows in the cloud so you can run them without local hardware. <a href="https://floyo.ai/workflows">Browse workflows.</a></p></details>
+        <details><summary>What is the Floyo API?</summary><p class="fa">The Floyo API lets developers run any ComfyUI workflow programmatically. You send an API call with your image, specify the workflow (like this upscaler), and get the result back. It handles the GPU infrastructure, model loading, and scaling. <a href="https://docs.floyo.ai/floyo-api-introduction">Read the API docs.</a></p></details>
+      </div>
+    </div></section>
+
+    <!-- cta -->
+    <section class="seo-sec"><div class="seo-in">
+      <div class="seo-cta">
+        <h2>Run open-source AI workflows in the browser</h2>
+        <p>Floyo is the only platform with team collaboration for ComfyUI. No install. Shared run history, assets and models. Pay only when you generate.</p>
+        <div class="row">
+          <a class="b1" href="https://www.floyo.ai">Try Floyo free</a>
+          <a class="b2" href="https://docs.floyo.ai/floyo-api-introduction">Explore the API</a>
+        </div>
+      </div>
+    </div></section>
+
+    <!-- footer -->
+    <footer class="seo-footer">
+      <div>&copy; 2026 Floyo. All rights reserved.</div>
+      <div class="fl">
+        <a href="https://floyo.ai">Home</a>
+        <a href="https://floyo.ai/workflows">Workflows</a>
+        <a href="https://docs.floyo.ai/floyo-api-introduction">API Docs</a>
+        <a href="https://floyo.ai/privacy">Privacy</a>
+        <a href="https://floyo.ai/terms">Terms</a>
+      </div>
+    </footer>
+
+  </div>
+  <!-- ════════════════════ /SEO CONTENT ════════════════════ -->
+
+  <input type="file" id="fileInput" accept="image/*" hidden>
+
+  <template id="__bundler_thumbnail">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+      <rect width="100" height="100" rx="20" fill="#1A0C34"/>
+      <rect x="30" y="44" width="14" height="14" rx="2" fill="#AF7FF4"/>
+      <rect x="52" y="30" width="28" height="28" rx="3" fill="#3CE195"/>
+      <path d="M58 50 L70 38 M70 38 L62 38 M70 38 L70 46" stroke="#1A0C34" stroke-width="3" fill="none" stroke-linecap="square"/>
+    </svg>
+  </template>
+
+  <script src="upscaler.js"></script>
+</body>
+</html>
