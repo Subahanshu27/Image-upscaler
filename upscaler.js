@@ -24,7 +24,7 @@
     factor: 4,                    // 2 | 4 | 8
     detail: 3,                    // 0..3  Soft|Normal|Sharp|Very sharp
     color: true,                  // color correction
-    format: "png",                // jpg | png | webp
+    format: "jpg",                // jpg | png | webp
     apiKey: "",                   // user's Floyo API key (BYOK)
     img: null                     // {name,w,h,after,before,original,file,resultUrl,resultName}
   };
@@ -420,12 +420,36 @@
     var out = job.outputs && job.outputs[0];
     if (!out) { showError("The run finished but produced no image."); return; }
     var url = API_BASE + "/api/jobs/" + encodeURIComponent(curJob) + "/files/" + encodeURIComponent(out.id);
-    setProgress(100, "Done!");
-    S.img.before = S.img.original;     // before = your original upload
-    S.img.after = url;                 // after  = the upscaled result from the backend
-    S.img.resultUrl = url;
-    S.img.resultName = out.name || "upscaled.png";
-    setTimeout(function () { setPhase("result"); setSlider(50); }, 300);
+
+    // The result can be a very large file (an 8x PNG is 5120x6400 — tens of MB).
+    // Keep the progress overlay up and fully download + decode it BEFORE switching
+    // to the result view, so the comparison never appears half-blank.
+    running = false;
+    setProgress(99, "Downloading your image…");
+
+    var revealed = false;
+    function reveal(src) {
+      if (revealed) return; revealed = true;
+      S.img.before = S.img.original;     // before = your original upload
+      S.img.after = src;                 // after  = decoded result (object URL or direct URL)
+      S.img.resultUrl = src;
+      S.img.resultName = out.name || "upscaled.png";
+      setProgress(100, "Done!");
+      setPhase("result"); setSlider(50);
+    }
+
+    fetch(url)
+      .then(function (r) { if (!r.ok) throw new Error("fetch failed"); return r.blob(); })
+      .then(function (blob) {
+        var obj = URL.createObjectURL(blob);
+        var im = new Image();                 // decode before revealing
+        im.onload = function () { reveal(obj); };
+        im.onerror = function () { reveal(obj); };
+        im.src = obj;
+      })
+      .catch(function () { reveal(url); });    // fallback: let the <img> load it directly
+
+    setTimeout(function () { reveal(url); }, 120000);   // ultimate safety net
   }
 
   function stopTimers() { clearInterval(creepTimer); clearTimeout(pollTimer); clearInterval(procTick); running = false; }
