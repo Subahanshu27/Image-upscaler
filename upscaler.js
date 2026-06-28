@@ -15,7 +15,7 @@
   var API_BASE =
     (location.hostname === "localhost" || location.hostname === "127.0.0.1")
       ? "http://localhost:5000"
-      : "https://upscaler-3-224-107-180.nip.io";   // <-- set to "https://your-backend-domain" before you deploy
+      : "https://api.aiupscaleronline.com";   // production backend (EC2 behind nginx + Let's Encrypt)
 
   // ── State ──────────────────────────────────────────────────────────
   var S = {
@@ -336,7 +336,7 @@
     "Rebuilding textures and edges…",
     "Enhancing resolution…",
     "Restoring sharpness…",
-    "Still working — 8K upscales take a few minutes…",
+    "Still working — high-res upscales take a few minutes…",
     "Hang tight — finalizing your image…"
   ];
   function fmtTime(ms) { var s = Math.floor(ms / 1000); return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); }
